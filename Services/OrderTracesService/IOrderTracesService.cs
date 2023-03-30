@@ -6,5 +6,6 @@ namespace OrderManagementWebAPI.Services.OrderTracesService
     {
         public Task<IEnumerable<OrderTrace>> GetOrderTracesAsync(int orderNumber);
         public Task AddOrderTracesAsync(int orderNumber);
+        public Task<bool> DeleteOrderTracesAsync(int orderNumber);
     }
 }

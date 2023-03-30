@@ -55,7 +55,6 @@ namespace OrderManagementWebAPI
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();

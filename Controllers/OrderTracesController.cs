@@ -59,5 +59,22 @@ namespace OrderManagementWebAPI.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpDelete("{orderNumber}")]
+        public async Task<IActionResult> DeleteOrderTraces([FromRoute] int orderNumber)
+        {
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            try
+            {
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
+                bool result = await _orderTracesService.DeleteOrderTracesAsync(orderNumber);
+                return result ? Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted) : BadRequest(ErrorMessagesEnum.NoElementFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

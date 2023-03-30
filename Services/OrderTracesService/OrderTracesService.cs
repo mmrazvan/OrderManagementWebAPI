@@ -16,6 +16,11 @@ namespace OrderManagementWebAPI.Services.OrderTracesService
             await _orderTraceRepo.AddOrderTracesAsync(orderNumber);
         }
 
+        public async Task<bool> DeleteOrderTracesAsync(int orderNumber)
+        {
+            return await _orderTraceRepo.DeleteOrderTracesAsync(orderNumber);
+        }
+
         public async Task<IEnumerable<OrderTrace>> GetOrderTracesAsync(int orderNumber)
         {
             return await _orderTraceRepo.GetOrderTracesAsync(orderNumber);
