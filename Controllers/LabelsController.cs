@@ -26,7 +26,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLabelsAsync()
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetLabelsAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}",methodName, DateTime.Now);
@@ -43,7 +43,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{id:int}",Name = "GetLabelByIdAsync")]
         public async Task<IActionResult> GetLabelByIdAsync([FromRoute] int id)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetLabelByIdAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -60,7 +60,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{name}",Name = "GetLabelByNameAsync")]
         public async Task<IActionResult> GetLabelByNameAsync([FromRoute] string name)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetLabelByNameAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -77,7 +77,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLabel([FromBody] Labels label)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "AddLabel";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -103,7 +103,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLabelAsync(int id)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "DeleteLabelAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -120,7 +120,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLabel([FromRoute]int id, [FromBody]CreateUpdateLabels label)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "PutLabel";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -148,7 +148,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchLabel([FromRoute] int id, [FromBody] CreateUpdateLabels label)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "PatchLabel";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);

@@ -48,8 +48,6 @@ namespace OrderManagementWebAPI.Services.LabelsService
 
         public async Task<CreateUpdateLabels> UpdatePartiallyLabelsAsync(int id, CreateUpdateLabels label)
         {
-            //ValidationFunctions.ExceptionWhenSizeNotInRange(label.Width);
-            //ValidationFunctions.ExceptionWhenSizeNotInRange(label.Heigth);
             return await _labelsRepo.UpdatePartiallyLabelsAsync(id, label);
         }
     }

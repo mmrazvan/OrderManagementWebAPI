@@ -39,8 +39,9 @@ namespace OrderManagementWebAPI
             builder.Services.AddTransient<IOrderTracesRepo, OrderTracesRepo>();
             builder.Services.AddTransient<IOrderTracesService, OrderTracesService>();
 
-
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            builder.Logging.AddLog4Net("log4net.config");
 
             var app = builder.Build();
 

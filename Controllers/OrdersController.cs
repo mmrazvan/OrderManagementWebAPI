@@ -26,7 +26,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrdersAsync()
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetOrdersAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -43,7 +43,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderByIdAsync([FromRoute] int id)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetOrderByIdAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -60,7 +60,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostOrder([FromBody] Orders order)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "PostOrder";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -86,7 +86,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderAsync(int id)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "DeleteOrderAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -103,7 +103,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] CreateUpdateOrders order)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "PutOrder";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -131,7 +131,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchOrder([FromRoute] int id, [FromBody] CreateUpdateOrders order)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "PatchOrder";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);

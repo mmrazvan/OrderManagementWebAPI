@@ -2,7 +2,7 @@
 
 namespace OrderManagementWebAPI.Helpers
 {
-    public class DataHelpers
+    public static class DataHelpers
     {
         public static List<OrderLabels> CreateLabels(Orders order)
         {

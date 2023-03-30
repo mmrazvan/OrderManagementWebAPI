@@ -23,7 +23,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{orderNumber}")]
         public async Task<IActionResult> GetOrderLabelsAsync([FromRoute]int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetOrderLabelsAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -39,7 +39,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPost("{orderNumber}")]
         public async Task<IActionResult> AddOrderLabels([FromRoute] int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "AddOrderLabels";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -61,7 +61,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpDelete("{orderNumber}")]
         public async Task<IActionResult> DeleteOrderLabels([FromRoute] int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "DeleteOrderLabels";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);

@@ -14,6 +14,6 @@ namespace OrderManagementWebAPI.DTOs.CreateUpdateObjects
         [JsonIgnore]
         public DateTime? DateOut { get; set; }
         [StringLength(5, MinimumLength = 1)]
-        public string MachineId { get; set; }
+        public string? MachineId { get; set; }
     }
 }

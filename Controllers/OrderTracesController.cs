@@ -26,7 +26,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{orderNumber}")]
         public async Task<IActionResult> GetOrderTracesAsync([FromRoute]int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "GetOrderTracesAsync";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -43,7 +43,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPost("{orderNumber}")]
         public async Task<IActionResult> AddOrderTracess([FromRoute] int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "AddOrderTracess";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -65,7 +65,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpDelete("{orderNumber}")]
         public async Task<IActionResult> DeleteOrderTraces([FromRoute] int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "DeleteOrderTraces";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
@@ -82,7 +82,7 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPatch("{idBoxNumber}")]
         public async Task<IActionResult> PatchOrderTrace([FromRoute] string idBoxNumber, [FromBody] CreateUpdateOrderTraces orderTrace)
         {
-            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            string methodName = "PatchOrderTrace";
             try
             {
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
