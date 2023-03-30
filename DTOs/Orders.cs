@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable disable
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace OrderManagementWebAPI.DTOs
@@ -7,8 +8,9 @@ namespace OrderManagementWebAPI.DTOs
     {
         [JsonIgnore]
         public int OrderNumber { get; set; }
-        //[StringLength(10, MinimumLength = 1)]
-        public string? Client { get; set; }
+        [Required]
+        [StringLength(10, MinimumLength = 1)]
+        public string Client { get; set; }
         [Required]
         [StringLength(20, MinimumLength = 1)]
         public string DocumentName { get; set; }
