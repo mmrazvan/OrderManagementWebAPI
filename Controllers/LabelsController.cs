@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using OrderManagementWebAPI.DTOs;
+using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Helpers;
-using OrderManagementWebAPI.Services;
+using OrderManagementWebAPI.Services.LabelsService;
 
 namespace OrderManagementWebAPI.Controllers
 {
@@ -86,6 +87,34 @@ namespace OrderManagementWebAPI.Controllers
             }
         }
 
+        
+
+        [HttpPost]
+        public async Task<IActionResult> PostLabel([FromBody] Labels label)
+        {
+            string methoName = MethodBase.GetCurrentMethod().Name;
+            try
+            {
+                _logger.LogInformation($"{methoName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                if (label == null)
+                {
+                    return BadRequest(ErrorMessagesEnum.BadRequest);
+                }
+                await _labelsService.AddLabelAsync(label);
+                return Ok(SuccessMessagesEnum.ElementSuccesfullyAdded);
+            }
+            catch (ModelValidationException ex)
+            {
+                _logger.LogError($"{methoName} error: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{methoName} error: {ex.Message}");
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLabelAsync(int id)
         {
@@ -107,8 +136,8 @@ namespace OrderManagementWebAPI.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostLabel([FromBody] Labels label)
+        [HttpPut("id")]
+        public async Task<IActionResult> PutLabel([FromRoute]int id, [FromBody]CreateUpdateLabels label)
         {
             string methoName = MethodBase.GetCurrentMethod().Name;
             try
@@ -116,10 +145,14 @@ namespace OrderManagementWebAPI.Controllers
                 _logger.LogInformation($"{methoName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
                 if (label == null)
                 {
-                    return BadRequest(ErrorMessagesEnum.BadRequest);
+                    return BadRequest(ErrorMessagesEnum.NoElementFound);
                 }
-                await _labelsService.AddLabelAsync(label);
-                return Ok(SuccessMessagesEnum.ElementSuccesfullyAdded);
+                CreateUpdateLabels updateLabel = await _labelsService.UpdateLabelsAsync(id, label);
+                if (updateLabel == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
+                }
+                return Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
             }
             catch (ModelValidationException ex)
             {

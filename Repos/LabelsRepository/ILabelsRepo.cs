@@ -1,6 +1,7 @@
 ﻿using OrderManagementWebAPI.DTOs;
+using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 
-namespace OrderManagementWebAPI.Repos
+namespace OrderManagementWebAPI.Repos.LabelsRepository
 {
     public interface ILabelsRepo
     {
@@ -12,6 +13,7 @@ namespace OrderManagementWebAPI.Repos
         public Task<Labels> GetLabelByNameAsync(string name);
 
         public Task<bool> DeleteLabelAsync(int id);
+        public Task<CreateUpdateLabels> UpdateLabelsAsync(int id, CreateUpdateLabels labels);
 
     }
 }
