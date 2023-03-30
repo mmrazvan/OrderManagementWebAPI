@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using OrderManagementWebAPI.DTOs;
+using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Helpers;
 
 namespace OrderManagementWebAPI.Repos.OrderTracesRepository
@@ -39,6 +40,32 @@ namespace OrderManagementWebAPI.Repos.OrderTracesRepository
         public async Task<IEnumerable<OrderTrace>> GetOrderTracesAsync(int orderNumber)
         {
             return await _context.OrderTrace.Where(ot => ot.OrderNumber == orderNumber).ToListAsync();
+        }
+
+        public async Task<OrderTrace> GetOrderTracesByIdBoxNumberAsync(string idBoxNumber)
+        {
+            return await _context.OrderTrace.FirstOrDefaultAsync(ot => ot.IdBoxNumber == idBoxNumber);
+        }
+
+        public async Task<CreateUpdateOrderTraces> UpdatePartiallyOrderTracesAsync(string idBoxNumber, CreateUpdateOrderTraces orderTrace)
+        {
+            var orderTraceFromDb = await GetOrderTracesByIdBoxNumberAsync(idBoxNumber);
+            if (orderTraceFromDb == null)
+            {
+                return null;
+            }
+
+            if (orderTraceFromDb.MachineId == null)
+            {
+                orderTraceFromDb.MachineId = orderTrace.MachineId;
+                orderTraceFromDb.DateOut = DateTime.Now;
+            }
+            else
+                return null;         
+
+            _context.OrderTrace.Update(orderTraceFromDb);
+            await _context.SaveChangesAsync();
+            return orderTrace;
         }
     }
 }

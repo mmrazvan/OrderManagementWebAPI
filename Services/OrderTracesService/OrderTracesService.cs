@@ -1,4 +1,5 @@
 ﻿using OrderManagementWebAPI.DTOs;
+using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Repos.OrderTracesRepository;
 
 namespace OrderManagementWebAPI.Services.OrderTracesService
@@ -24,6 +25,11 @@ namespace OrderManagementWebAPI.Services.OrderTracesService
         public async Task<IEnumerable<OrderTrace>> GetOrderTracesAsync(int orderNumber)
         {
             return await _orderTraceRepo.GetOrderTracesAsync(orderNumber);
+        }
+
+        public async Task<CreateUpdateOrderTraces> UpdatePartiallyOrderTracesAsync(string idBoxNumber, CreateUpdateOrderTraces orderTrace)
+        {
+            return await _orderTraceRepo.UpdatePartiallyOrderTracesAsync(idBoxNumber, orderTrace);
         }
     }
 }

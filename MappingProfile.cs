@@ -10,7 +10,8 @@ namespace OrderManagementWebAPI
         public MappingProfile() 
         {
             CreateMap<Labels, CreateUpdateLabels>().ReverseMap(); 
-            CreateMap<Orders, CreateUpdateOrders>().ReverseMap(); 
+            CreateMap<Orders, CreateUpdateOrders>().ReverseMap();
+            CreateMap<OrderTrace, CreateUpdateOrderTraces>().ReverseMap();
         }
     }
 }

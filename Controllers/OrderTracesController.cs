@@ -4,7 +4,9 @@ using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Helpers;
+using OrderManagementWebAPI.Model;
 using OrderManagementWebAPI.Services.OrderTracesService;
 
 namespace OrderManagementWebAPI.Controllers
@@ -69,6 +71,34 @@ namespace OrderManagementWebAPI.Controllers
                 _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 bool result = await _orderTracesService.DeleteOrderTracesAsync(orderNumber);
                 return result ? Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted) : BadRequest(ErrorMessagesEnum.NoElementFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPatch("{idBoxNumber}")]
+        public async Task<IActionResult> PatchOrderTrace([FromRoute] string idBoxNumber, [FromBody] CreateUpdateOrderTraces orderTrace)
+        {
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            try
+            {
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
+                if (orderTrace == null)
+                {
+                    return BadRequest(ErrorMessagesEnum.NoElementFound);
+                }
+                CreateUpdateOrderTraces updatedOrderTrace = await _orderTracesService.UpdatePartiallyOrderTracesAsync(idBoxNumber, orderTrace);
+                return updatedOrderTrace == null
+                    ? StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound)
+                    : (IActionResult)Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
+            }
+            catch (ModelValidationException ex)
+            {
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
