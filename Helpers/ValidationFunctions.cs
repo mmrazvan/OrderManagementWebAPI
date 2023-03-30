@@ -1,8 +1,9 @@
-﻿using System.Data.Entity.ModelConfiguration;
+﻿
+using OrderManagementWebAPI.Model;
 
 namespace OrderManagementWebAPI.Helpers
 {
-    public class ValidationFunctions
+    public static class ValidationFunctions
     {
         public static void ExceptionWhenSizeNotInRange(float dimension)
         {

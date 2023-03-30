@@ -11,5 +11,6 @@ namespace OrderManagementWebAPI.Services.LabelsService
         public Task AddLabelAsync(Labels label);
         public Task<bool> DeleteLabelAsync(int id);
         public Task<CreateUpdateLabels> UpdateLabelsAsync(int id, CreateUpdateLabels label);
+        public Task<CreateUpdateLabels> UpdatePartiallyLabelsAsync(int id, CreateUpdateLabels label);
     }
 }

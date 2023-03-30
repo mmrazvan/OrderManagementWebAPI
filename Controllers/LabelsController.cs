@@ -136,7 +136,7 @@ namespace OrderManagementWebAPI.Controllers
             }
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutLabel([FromRoute]int id, [FromBody]CreateUpdateLabels label)
         {
             string methoName = MethodBase.GetCurrentMethod().Name;
@@ -148,6 +148,36 @@ namespace OrderManagementWebAPI.Controllers
                     return BadRequest(ErrorMessagesEnum.NoElementFound);
                 }
                 CreateUpdateLabels updateLabel = await _labelsService.UpdateLabelsAsync(id, label);
+                if (updateLabel == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
+                }
+                return Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
+            }
+            catch (ModelValidationException ex)
+            {
+                _logger.LogError($"{methoName} error: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{methoName} error: {ex.Message}");
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchLabel([FromRoute] int id, [FromBody] CreateUpdateLabels label)
+        {
+            string methoName = MethodBase.GetCurrentMethod().Name;
+            try
+            {
+                _logger.LogInformation($"{methoName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                if (label == null)
+                {
+                    return BadRequest(ErrorMessagesEnum.NoElementFound);
+                }
+                CreateUpdateLabels updateLabel = await _labelsService.UpdatePartiallyLabelsAsync(id, label);
                 if (updateLabel == null)
                 {
                     return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
