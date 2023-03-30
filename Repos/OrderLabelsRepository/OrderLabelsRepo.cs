@@ -10,16 +10,18 @@ namespace OrderManagementWebAPI.Repos.OrderLabelsRepository
     public class OrderLabelsRepo : IOrderLabelsRepo
     {
         private readonly OrderManagementContext _context;
-        private readonly IMapper _mapper;
-        public OrderLabelsRepo(OrderManagementContext context, IMapper mapper)
+        public OrderLabelsRepo(OrderManagementContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task AddOrderLabels(int orderNumber)
         {
             var order = _context.Orders.FirstOrDefault(o => o.OrderNumber == orderNumber);
+            if (order == null)
+            {
+                return;
+            }
             var orderLabels = DataHelpers.CreateLabels(order);
             if (orderLabels != null)
             {

@@ -4,9 +4,11 @@ using OrderManagementWebAPI.DTOs;
 using OrderManagementWebAPI.Repos.LabelsRepository;
 using OrderManagementWebAPI.Repos.OrderLabelsRepository;
 using OrderManagementWebAPI.Repos.OrdersRepository;
+using OrderManagementWebAPI.Repos.OrderTracesRepository;
 using OrderManagementWebAPI.Services.LabelsService;
 using OrderManagementWebAPI.Services.OrderLabelsService;
 using OrderManagementWebAPI.Services.OrdersService;
+using OrderManagementWebAPI.Services.OrderTracesService;
 
 namespace OrderManagementWebAPI
 {
@@ -33,6 +35,9 @@ namespace OrderManagementWebAPI
 
             builder.Services.AddTransient<IOrderLabelsRepo, OrderLabelsRepo>();
             builder.Services.AddTransient<IOrderLabelsService, OrderLabelsService>();
+
+            builder.Services.AddTransient<IOrderTracesRepo, OrderTracesRepo>();
+            builder.Services.AddTransient<IOrderTracesService, OrderTracesService>();
 
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
