@@ -79,7 +79,7 @@ namespace OrderManagementWebAPI.DTOs
                 entity.Property(e => e.OrderNumber).ValueGeneratedNever();
 
                 entity.Property(e => e.Client)
-                    .IsRequired()
+                    //.IsRequired()
                     .HasMaxLength(50);
 
                 entity.Property(e => e.CustomSortField).HasMaxLength(50);

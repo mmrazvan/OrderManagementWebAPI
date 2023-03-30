@@ -1,5 +1,4 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using System.Net;
+﻿using System.Net;
 using System.Reflection;
 
 using Microsoft.AspNetCore.Mvc;
@@ -7,35 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using OrderManagementWebAPI.DTOs;
 using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Helpers;
-using OrderManagementWebAPI.Services.LabelsService;
+using OrderManagementWebAPI.Model;
+using OrderManagementWebAPI.Services.OrdersService;
 
 namespace OrderManagementWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LabelsController : ControllerBase
+    public class OrdersController : ControllerBase
     {
-        private readonly ILabelsService _labelsService;
-        private readonly ILogger<LabelsController> _logger;
-        public LabelsController(ILabelsService labelsService, ILogger<LabelsController> logger)
+        private readonly IOrdersService _ordersService;
+        private readonly ILogger<OrdersController> _logger;
+
+        public OrdersController(IOrdersService ordersService, ILogger<OrdersController> logger)
         {
-            _labelsService = labelsService;
+            _ordersService = ordersService;
             _logger = logger;
         }
-
         [HttpGet]
-        public async Task<IActionResult> GetLabelsAsync()
+        public async Task<IActionResult> GetOrdersAsync()
         {
             string methodName = MethodBase.GetCurrentMethod().Name;
             try
             {
                 _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                var labels = await _labelsService.GetLabelsAsync();
-                if (labels == null || !labels.Any())
+                var orders = await _ordersService.GetOrdersAsync();
+                if (orders == null || !orders.Any())
                 {
                     return NotFound(ErrorMessagesEnum.NoElementFound);
                 }
-                return Ok(labels);
+                return Ok(orders);
             }
             catch (Exception ex)
             {
@@ -44,19 +44,19 @@ namespace OrderManagementWebAPI.Controllers
             }
         }
 
-        [HttpGet("{id:int}",Name = "GetLabelByIdAsync")]
-        public async Task<IActionResult> GetLabelByIdAsync([FromRoute] int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderByIdAsync([FromRoute] int id)
         {
             string methodName = MethodBase.GetCurrentMethod().Name;
             try
             {
                 _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                var label = await _labelsService.GetLabelByIdAsync(id);
-                if (label == null)
+                Orders order = await _ordersService.GetOrderByIdAsync(id);
+                if (order == null)
                 {
                     return NotFound(ErrorMessagesEnum.NoElementFound);
                 }
-                return Ok(label);
+                return Ok(order);
             }
             catch (Exception ex)
             {
@@ -64,40 +64,19 @@ namespace OrderManagementWebAPI.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        [HttpGet("{name}",Name = "GetLabelByNameAsync")]
-        public async Task<IActionResult> GetLabelByNameAsync([FromRoute] string name)
-        {
-            string methoName = MethodBase.GetCurrentMethod().Name;
-            try
-            {
-                _logger.LogInformation($"{methoName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                var label = await _labelsService.GetLabelByNameAsync(name);
-                if (label == null)
-                {
-                    return NotFound(ErrorMessagesEnum.NoElementFound);
-                }
-                return Ok(label);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{methoName} error: {ex.Message}");
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }        
 
         [HttpPost]
-        public async Task<IActionResult> AddLabel([FromBody] Labels label)
+        public async Task<IActionResult> PostOrder([FromBody] Orders order)
         {
             string methodName = MethodBase.GetCurrentMethod().Name;
             try
             {
                 _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                if (label == null)
+                if (order == null)
                 {
                     return BadRequest(ErrorMessagesEnum.BadRequest);
                 }
-                await _labelsService.AddLabelAsync(label);
+                await _ordersService.AddOrderAsync(order);
                 return Ok(SuccessMessagesEnum.ElementSuccesfullyAdded);
             }
             catch (ModelValidationException ex)
@@ -113,13 +92,13 @@ namespace OrderManagementWebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLabelAsync(int id)
+        public async Task<IActionResult> DeleteOrderAsync(int id)
         {
             string methodName = MethodBase.GetCurrentMethod().Name;
             try
             {
                 _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                bool result = await _labelsService.DeleteLabelAsync(id);
+                bool result = await _ordersService.DeleteOrderAsync(id);
                 if (result)
                 {
                     return Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted);
@@ -134,18 +113,18 @@ namespace OrderManagementWebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLabel([FromRoute]int id, [FromBody]CreateUpdateLabels label)
+        public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] CreateUpdateOrders order)
         {
             string methodName = MethodBase.GetCurrentMethod().Name;
             try
             {
                 _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                if (label == null)
+                if (order == null)
                 {
                     return BadRequest(ErrorMessagesEnum.NoElementFound);
                 }
-                CreateUpdateLabels updatedLabel = await _labelsService.UpdateLabelsAsync(id, label);
-                if (updatedLabel == null)
+                CreateUpdateOrders updatedOrder = await _ordersService.UpdateOrderAsync(id, order);
+                if (updatedOrder == null)
                 {
                     return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
                 }
@@ -164,18 +143,18 @@ namespace OrderManagementWebAPI.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchLabel([FromRoute] int id, [FromBody] CreateUpdateLabels label)
+        public async Task<IActionResult> PatchOrder([FromRoute] int id, [FromBody] CreateUpdateOrders order)
         {
             string methoName = MethodBase.GetCurrentMethod().Name;
             try
             {
                 _logger.LogInformation($"{methoName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
-                if (label == null)
+                if (order == null)
                 {
                     return BadRequest(ErrorMessagesEnum.NoElementFound);
                 }
-                CreateUpdateLabels updatedLabel = await _labelsService.UpdatePartiallyLabelsAsync(id, label);
-                if (updatedLabel == null)
+                CreateUpdateOrders updatedOrder = await _ordersService.UpdatePartiallyOrderAsync(id, order);
+                if (updatedOrder == null)
                 {
                     return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
                 }

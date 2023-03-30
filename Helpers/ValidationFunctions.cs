@@ -12,5 +12,13 @@ namespace OrderManagementWebAPI.Helpers
                 throw new ModelValidationException(ErrorMessagesEnum.LabelSize);
             }
         }
+
+        public static void ExceptionWhenFieldRequied(string  field)
+        {
+            if (string.IsNullOrEmpty(field))
+            {
+                throw new ModelValidationException($"The field {field} is {ErrorMessagesEnum.LabelSize}"); 
+            }
+        }
     }
 }

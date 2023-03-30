@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-
-using OrderManagementWebAPI.DTOs;
+﻿using OrderManagementWebAPI.DTOs;
 using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Helpers;
 using OrderManagementWebAPI.Repos.LabelsRepository;
@@ -10,50 +7,50 @@ namespace OrderManagementWebAPI.Services.LabelsService
 {
     public class LabelsService : ILabelsService
     {
-        private readonly ILabelsRepo _repo;
-        public LabelsService(ILabelsRepo repo)
+        private readonly ILabelsRepo _labelsRepo;
+        public LabelsService(ILabelsRepo labelsRepo)
         {
-            _repo = repo;
+            _labelsRepo = labelsRepo;
         }
 
         public async Task AddLabelAsync(Labels label)
         {
             ValidationFunctions.ExceptionWhenSizeNotInRange(label.Width);
             ValidationFunctions.ExceptionWhenSizeNotInRange(label.Heigth);
-            await _repo.AddLabelAsync(label);
+            await _labelsRepo.AddLabelAsync(label);
         }
 
         public async Task<bool> DeleteLabelAsync(int id)
         {
-            return await _repo.DeleteLabelAsync(id);
+            return await _labelsRepo.DeleteLabelAsync(id);
         }
         public async Task<Labels> GetLabelByIdAsync(int id)
         {
-            return await _repo.GetLabelByIdAsync(id);
+            return await _labelsRepo.GetLabelByIdAsync(id);
         }
 
         public async Task<Labels> GetLabelByNameAsync(string name)
         {
-            return await _repo.GetLabelByNameAsync(name);
+            return await _labelsRepo.GetLabelByNameAsync(name);
         }
 
         public async Task<IEnumerable<Labels>> GetLabelsAsync()
         {
-            return await _repo.GetLabelsAsync();
+            return await _labelsRepo.GetLabelsAsync();
         }
 
         public async Task<CreateUpdateLabels> UpdateLabelsAsync(int id, CreateUpdateLabels label)
         {
             ValidationFunctions.ExceptionWhenSizeNotInRange(label.Width);
             ValidationFunctions.ExceptionWhenSizeNotInRange(label.Heigth);
-            return await _repo.UpdateLabelsAsync(id, label);
+            return await _labelsRepo.UpdateLabelsAsync(id, label);
         }
 
         public async Task<CreateUpdateLabels> UpdatePartiallyLabelsAsync(int id, CreateUpdateLabels label)
         {
             //ValidationFunctions.ExceptionWhenSizeNotInRange(label.Width);
             //ValidationFunctions.ExceptionWhenSizeNotInRange(label.Heigth);
-            return await _repo.UpdatePartiallyLabelsAsync(id, label);
+            return await _labelsRepo.UpdatePartiallyLabelsAsync(id, label);
         }
     }
 }

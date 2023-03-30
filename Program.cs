@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 using OrderManagementWebAPI.DTOs;
 using OrderManagementWebAPI.Repos.LabelsRepository;
+using OrderManagementWebAPI.Repos.OrdersRepository;
 using OrderManagementWebAPI.Services.LabelsService;
+using OrderManagementWebAPI.Services.OrdersService;
 
 namespace OrderManagementWebAPI
 {
@@ -23,6 +25,9 @@ namespace OrderManagementWebAPI
 
             builder.Services.AddTransient<ILabelsRepo, LabelsRepo>();
             builder.Services.AddTransient<ILabelsService, LabelsService>();
+
+            builder.Services.AddTransient<IOrdersRepo, OrdersRepo>();
+            builder.Services.AddTransient<IOrdersService, OrdersService>();
 
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
