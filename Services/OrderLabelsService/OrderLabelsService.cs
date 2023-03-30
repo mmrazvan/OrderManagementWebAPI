@@ -16,6 +16,11 @@ namespace OrderManagementWebAPI.Services.OrderLabelsService
             await _orderLabelsRepo.AddOrderLabels(orderNumber);
         }
 
+        public async Task<bool> DeleteOrderLabelsAsync(int orderNumber)
+        {
+            return await _orderLabelsRepo.DeleteOrderLabelsAsync(orderNumber);
+        }
+
         public async Task<IEnumerable<OrderLabels>> GetOrderLabelsAsync(int orderNumber)
         {
             return await _orderLabelsRepo.GetOrderLabelsAsync(orderNumber);

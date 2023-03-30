@@ -28,6 +28,19 @@ namespace OrderManagementWebAPI.Repos.OrderLabelsRepository
             }
         }
 
+        public async Task<bool> DeleteOrderLabelsAsync(int orderNumber)
+        {
+            var order = await _context.Orders.Where(o => o.OrderNumber == orderNumber).FirstOrDefaultAsync();
+            if (order == null)
+            {
+                return false;
+            }
+            var orderLabels = await GetOrderLabelsAsync(orderNumber);
+            _context.OrderLabels.RemoveRange(orderLabels);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<IEnumerable<OrderLabels>> GetOrderLabelsAsync(int orderNumber)
         {
             return await _context.OrderLabels.Where(ol => ol.OrderNumber == orderNumber).ToListAsync();

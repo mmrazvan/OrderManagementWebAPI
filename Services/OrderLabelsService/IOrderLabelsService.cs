@@ -6,5 +6,6 @@ namespace OrderManagementWebAPI.Services.OrderLabelsService
     {
         public Task<IEnumerable<OrderLabels>> GetOrderLabelsAsync(int orderNumber);
         public Task AddOrderLabels(int orderNumber);
+        public Task<bool> DeleteOrderLabelsAsync(int orderNumber);
     }
 }
