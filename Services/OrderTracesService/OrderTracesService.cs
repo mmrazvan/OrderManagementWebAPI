@@ -10,6 +10,12 @@ namespace OrderManagementWebAPI.Services.OrderTracesService
         {
             _orderTraceRepo = orderTracesRepo;
         }
+
+        public async Task AddOrderTracesAsync(int orderNumber)
+        {
+            await _orderTraceRepo.AddOrderTracesAsync(orderNumber);
+        }
+
         public async Task<IEnumerable<OrderTrace>> GetOrderTracesAsync(int orderNumber)
         {
             return await _orderTraceRepo.GetOrderTracesAsync(orderNumber);

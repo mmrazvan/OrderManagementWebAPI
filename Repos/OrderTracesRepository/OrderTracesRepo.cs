@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using OrderManagementWebAPI.DTOs;
+using OrderManagementWebAPI.Helpers;
 
 namespace OrderManagementWebAPI.Repos.OrderTracesRepository
 {
@@ -12,6 +13,15 @@ namespace OrderManagementWebAPI.Repos.OrderTracesRepository
         {
             _context = context;
         }
+
+        public async Task AddOrderTracesAsync(int ordernumber)
+        {
+            var orderLabels = await _context.OrderLabels.Where(ol => ol.OrderNumber == ordernumber).ToListAsync();
+            var orderTraces = DataHelpers.CreateTraces(orderLabels);
+            await _context.OrderTrace.AddRangeAsync(orderTraces);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<OrderTrace>> GetOrderTracesAsync(int orderNumber)
         {
             return await _context.OrderTrace.Where(ot => ot.OrderNumber == orderNumber).ToListAsync();

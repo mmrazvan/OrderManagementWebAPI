@@ -37,5 +37,27 @@ namespace OrderManagementWebAPI.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("{orderNumber}")]
+        public async Task<IActionResult> AddOrderTracess([FromRoute] int orderNumber)
+        {
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
+            try
+            {
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
+
+                if (orderNumber == 0)
+                {
+                    return NotFound(ErrorMessagesEnum.NoElementFound);
+                }
+                await _orderTracesService.AddOrderTracesAsync(orderNumber);
+                return Ok(SuccessMessagesEnum.ElementSuccesfullyAdded);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
