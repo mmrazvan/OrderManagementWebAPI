@@ -26,20 +26,16 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrdersAsync()
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 var orders = await _ordersService.GetOrdersAsync();
-                if (orders == null || !orders.Any())
-                {
-                    return NotFound(ErrorMessagesEnum.NoElementFound);
-                }
-                return Ok(orders);
+                return orders == null || !orders.Any() ? NotFound(ErrorMessagesEnum.NoElementFound) : Ok(orders);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -47,20 +43,16 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderByIdAsync([FromRoute] int id)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 Orders order = await _ordersService.GetOrderByIdAsync(id);
-                if (order == null)
-                {
-                    return NotFound(ErrorMessagesEnum.NoElementFound);
-                }
-                return Ok(order);
+                return order == null ? NotFound(ErrorMessagesEnum.NoElementFound) : Ok(order);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -68,10 +60,10 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostOrder([FromBody] Orders order)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 if (order == null)
                 {
                     return BadRequest(ErrorMessagesEnum.BadRequest);
@@ -81,12 +73,12 @@ namespace OrderManagementWebAPI.Controllers
             }
             catch (ModelValidationException ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -94,20 +86,16 @@ namespace OrderManagementWebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderAsync(int id)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 bool result = await _ordersService.DeleteOrderAsync(id);
-                if (result)
-                {
-                    return Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted);
-                }
-                return BadRequest(ErrorMessagesEnum.NoElementFound);
+                return result ? Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted) : BadRequest(ErrorMessagesEnum.NoElementFound);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -115,29 +103,27 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] CreateUpdateOrders order)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 if (order == null)
                 {
                     return BadRequest(ErrorMessagesEnum.NoElementFound);
                 }
                 CreateUpdateOrders updatedOrder = await _ordersService.UpdateOrderAsync(id, order);
-                if (updatedOrder == null)
-                {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
-                }
-                return Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
+                return updatedOrder == null
+                    ? StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound)
+                    : (IActionResult)Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
             }
             catch (ModelValidationException ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -145,29 +131,25 @@ namespace OrderManagementWebAPI.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchOrder([FromRoute] int id, [FromBody] CreateUpdateOrders order)
         {
-            string methoName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methoName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 if (order == null)
                 {
                     return BadRequest(ErrorMessagesEnum.NoElementFound);
                 }
                 CreateUpdateOrders updatedOrder = await _ordersService.UpdatePartiallyOrderAsync(id, order);
-                if (updatedOrder == null)
-                {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound);
-                }
-                return Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
+                return updatedOrder == null ? StatusCode((int)HttpStatusCode.InternalServerError, ErrorMessagesEnum.NoElementFound) : (IActionResult)Ok(SuccessMessagesEnum.ElementSuccesfullyUpdated);
             }
             catch (ModelValidationException ex)
             {
-                _logger.LogError($"{methoName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methoName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }

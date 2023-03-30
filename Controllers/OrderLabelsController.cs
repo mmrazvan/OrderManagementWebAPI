@@ -23,30 +23,26 @@ namespace OrderManagementWebAPI.Controllers
         [HttpGet("{orderNumber}")]
         public async Task<IActionResult> GetOrderLabelsAsync([FromRoute]int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 var orderLabels = await _orderLabelsService.GetOrderLabelsAsync(orderNumber);
-                if (orderLabels == null)
-                {
-                    return NotFound(ErrorMessagesEnum.NoElementFound);
-                }
-                return Ok(orderLabels);
+                return orderLabels == null ? NotFound(ErrorMessagesEnum.NoElementFound) : Ok(orderLabels);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
         [HttpPost("{orderNumber}")]
         public async Task<IActionResult> AddOrderLabels([FromRoute] int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
 
                 if (orderNumber == 0)
                 {
@@ -57,7 +53,7 @@ namespace OrderManagementWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -65,20 +61,16 @@ namespace OrderManagementWebAPI.Controllers
         [HttpDelete("{orderNumber}")]
         public async Task<IActionResult> DeleteOrderLabels([FromRoute] int orderNumber)
         {
-            string methodName = MethodBase.GetCurrentMethod().Name;
+            string methodName = MethodBase.GetCurrentMethod()!.Name;
             try
             {
-                _logger.LogInformation($"{methodName} started at: {DateTime.Now:dd.MM.yyyy HH:mm:ss}");
+                _logger.LogInformation("{methodName} started at: {Date}", methodName, DateTime.Now);
                 bool result = await _orderLabelsService.DeleteOrderLabelsAsync(orderNumber);
-                if (result)
-                {
-                    return Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted);
-                }
-                return BadRequest(ErrorMessagesEnum.NoElementFound);
+                return result ? Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted) : BadRequest(ErrorMessagesEnum.NoElementFound);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{methodName} error: {ex.Message}");
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
