@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 using OrderManagementWebAPI.DTOs;
 using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
+using OrderManagementWebAPI.Helpers;
+using OrderManagementWebAPI.Model;
 
 namespace OrderManagementWebAPI.Repos.OrdersRepository
 {
@@ -30,6 +32,15 @@ namespace OrderManagementWebAPI.Repos.OrdersRepository
             if (order == null)
             {
                 return false;
+            }
+            if (order.OrderStatus == "Production")
+            {
+                throw new ModelValidationException(ErrorMessagesEnum.OrderInProduction);
+            }
+            var orderLabels = await _context.OrderLabels.Where(ol => ol.OrderNumber == orderNumber).ToListAsync();
+            if (orderLabels.Any())
+            {
+                _context.OrderLabels.RemoveRange(orderLabels);
             }
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();

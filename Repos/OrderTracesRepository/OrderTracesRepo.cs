@@ -3,6 +3,7 @@
 using OrderManagementWebAPI.DTOs;
 using OrderManagementWebAPI.DTOs.CreateUpdateObjects;
 using OrderManagementWebAPI.Helpers;
+using OrderManagementWebAPI.Model;
 
 namespace OrderManagementWebAPI.Repos.OrderTracesRepository
 {
@@ -18,7 +19,17 @@ namespace OrderManagementWebAPI.Repos.OrderTracesRepository
         public async Task AddOrderTracesAsync(int ordernumber)
         {
             var orderLabels = await _context.OrderLabels.Where(ol => ol.OrderNumber == ordernumber).ToListAsync();
+            if (orderLabels == null || !orderLabels.Any())
+            {
+                throw new ModelValidationException(ErrorMessagesEnum.OrderLabelsMissing);
+            }
             var orderTraces = DataHelpers.CreateTraces(orderLabels);
+            if (!orderTraces.Any() || orderTraces == null)
+            {
+                throw new ModelValidationException(ErrorMessagesEnum.BadRequest);
+            }
+            
+
             await _context.OrderTrace.AddRangeAsync(orderTraces);
             await _context.SaveChangesAsync();
         }

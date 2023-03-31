@@ -48,6 +48,11 @@ namespace OrderManagementWebAPI.Controllers
                 {
                     return NotFound(ErrorMessagesEnum.NoElementFound);
                 }
+                var oldOrderLabels = await _orderLabelsService.GetOrderLabelsAsync(orderNumber);
+                if(oldOrderLabels.Any())
+                {
+                    return NotFound(ErrorMessagesEnum.DatabaseNotEmpty);
+                }
                 await _orderLabelsService.AddOrderLabels(orderNumber);
                 return Ok(SuccessMessagesEnum.ElementSuccesfullyAdded);
             }

@@ -93,6 +93,11 @@ namespace OrderManagementWebAPI.Controllers
                 bool result = await _ordersService.DeleteOrderAsync(id);
                 return result ? Ok(SuccessMessagesEnum.ElementSuccesfullyDeleted) : BadRequest(ErrorMessagesEnum.NoElementFound);
             }
+            catch (ModelValidationException ex)
+            {
+                _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError("{methodName} error: {Message}", methodName, ex.Message);

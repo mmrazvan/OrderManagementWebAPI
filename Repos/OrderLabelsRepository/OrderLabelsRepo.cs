@@ -38,6 +38,8 @@ namespace OrderManagementWebAPI.Repos.OrderLabelsRepository
                 return false;
             }
             var orderLabels = await GetOrderLabelsAsync(orderNumber);
+            if (orderLabels == null || !orderLabels.Any())
+                return false;
             _context.OrderLabels.RemoveRange(orderLabels);
             await _context.SaveChangesAsync();
             return true;
